@@ -4,6 +4,7 @@
     <HospitalTop />
     <div class="content">
       <!-- 中间 -->
+       <router-view></router-view>
     </div>
     <!-- 底部 -->
     <HospitalBottom />
@@ -22,7 +23,6 @@
   .content {
     margin-top: 70px;
     width:1160px;
-    height: 700px;
   }
 }
 </style>

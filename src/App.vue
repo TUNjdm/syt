@@ -12,7 +12,15 @@
 </template>
 
 <script setup lang="ts">
-
+import request from './utils/request';
+import { onMounted } from 'vue';
+onMounted(() => {
+  request.get('/hosp/hospital/1/10').then(res => {
+    console.log('展示的数据:', res);
+  }).catch(error => {
+    console.error('请求出错:', error);
+  });
+});
 </script>
 
 <style lang="scss" scoped>

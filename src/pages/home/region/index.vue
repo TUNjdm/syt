@@ -6,25 +6,8 @@
       </div>
       <div class="right">
         <ul>
-          <li class="active">全部</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li>杭州</li>
-          <li v-for="item in 10" :key="item">
-            西湖美景
-          </li>
+          <li :class="{active:regionFlag === ''}" @click="changeLevel('')">全部</li>
+          <li v-for="item in regionList" :key="item.id" :class="{active:Number(regionFlag) === item.id}" @click="changeLevel(String(item.id))">{{item.name}}</li>
         </ul>
       </div>
     </div>
@@ -32,7 +15,26 @@
 </template>
 
 <script setup lang="ts">
-
+import { onMounted, ref } from 'vue';
+import { reqHospitalLevelAndRegion } from '@/api/home';
+import type { HospitalLevelAndRegionResponseData,HospitalLevelAndRegionArr } from '@/api/home/type';
+onMounted(()=>{
+  getRegion()
+})
+const getRegion = async () => { 
+  await reqHospitalLevelAndRegion('beijin').then((res:HospitalLevelAndRegionResponseData)=>{
+    regionList.value = res.data;
+    console.log('地区数组：',res.data);
+})
+}
+// 地区列表
+const regionList = ref<HospitalLevelAndRegionArr>([]);
+  // 控制地区等级高亮响应式数据
+  const regionFlag = ref<string>('');
+  // 切换等级
+  const changeLevel = (id: string) => {
+    regionFlag.value = id;
+  }
 </script>
 
 <style scoped lang="scss">

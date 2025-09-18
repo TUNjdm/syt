@@ -47,6 +47,7 @@ import Search from "../home/search/index.vue";
 import level from "../home/level/index.vue";
 import region from "../home/region/index.vue";
 import card from "../home/card/index.vue";
+import type {Content,HospitalResponseData} from '@/api/home/type';
 
 interface Hospital {
   id: string;
@@ -62,7 +63,7 @@ const size = ref('small')
 const disabled = ref(false)
 const background = ref(true)
 // 存储已有医院数据
-const hospitalArr = ref<Hospital[]>([])
+const hospitalArr = ref<Content>([])
 // 存储医院总个数
 const total = ref<number>(0)
 // 页码变化时触发分页器重新加载
@@ -77,10 +78,11 @@ const sizeChange=()=>{
 onMounted(() => {
   getHospitalInfo()
 })
+// ... existing code ...
 // 获取已有医院数据
 const getHospitalInfo = async () => {
   // 获取医院数据
-  await reqHospital(pageNo.value, pageSize.value).then(res => {
+  await reqHospital(pageNo.value, pageSize.value).then((res: HospitalResponseData) => {
     console.log('获取到的医院数据:', res);
     // 存储已有医院数据
     hospitalArr.value = res.data.content
@@ -89,6 +91,7 @@ const getHospitalInfo = async () => {
     console.log('数组值:', hospitalArr.value);
   })
 }
+// ... existing code ...
 </script>
 <style lang="scss">
 .card-box {

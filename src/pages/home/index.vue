@@ -10,7 +10,7 @@
         <!-- 等级子组件 -->
         <level @getLevelnumber="getLevelnumber" />
         <!-- 地区 -->
-        <region />
+        <region @getRegion="getRegion" />
         <!-- 展示医院卡片 -->
         <div class="card-box">
           <!-- 循环插入多张医院卡片 -->
@@ -70,6 +70,7 @@ const total = ref<number>(0)
 const levelList = ref<string>()
 // 存储地区数据
 const regionList = ref<string>()
+
 // 页码变化时触发分页器重新加载
 const currentChange = () => {
   getHospitalInfo()
@@ -98,6 +99,12 @@ const getHospitalInfo = async () => {
 // 子组件自定义事件切换等级
 const getLevelnumber = (value: string) => {
   levelList.value = value;
+  getHospitalInfo()
+}
+// 子组件自定义事件切换地区
+const getRegion = (region: string) => {
+  // 存储地区的参数
+  regionList.value = region;
   getHospitalInfo()
 }
 // ... existing code ...

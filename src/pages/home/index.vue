@@ -8,7 +8,7 @@
     <el-row :gutter="20">
       <el-col :span="20">
         <!-- 等级子组件 -->
-        <level />
+        <level @getLevelnumber="getLevelnumber" />
         <!-- 地区 -->
         <region />
         <!-- 展示医院卡片 -->
@@ -66,6 +66,10 @@ const background = ref(true)
 const hospitalArr = ref<Content>([])
 // 存储医院总个数
 const total = ref<number>(0)
+// 存储医院等级数据
+const levelList = ref<string>()
+// 存储地区数据
+const regionList = ref<string>()
 // 页码变化时触发分页器重新加载
 const currentChange = () => {
   getHospitalInfo()
@@ -82,7 +86,7 @@ onMounted(() => {
 // 获取已有医院数据
 const getHospitalInfo = async () => {
   // 获取医院数据
-  await reqHospital(pageNo.value, pageSize.value).then((res: HospitalResponseData) => {
+  await reqHospital(pageNo.value, pageSize.value, levelList.value, regionList.value).then((res: HospitalResponseData) => {
     console.log('获取到的医院数据:', res);
     // 存储已有医院数据
     hospitalArr.value = res.data.content
@@ -90,6 +94,11 @@ const getHospitalInfo = async () => {
     total.value = res.data.totalElements
     console.log('数组值:', hospitalArr.value);
   })
+}
+// 子组件自定义事件切换等级
+const getLevelnumber = (value: string) => {
+  levelList.value = value;
+  getHospitalInfo()
 }
 // ... existing code ...
 </script>

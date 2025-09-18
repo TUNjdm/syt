@@ -9,7 +9,7 @@ const API = {
     HOSPITALLEVElANDREGION_URL: '/cmn/dict/findByDictCode/',
 } as const;
 // 获取医院详情数据
-export const reqHospital = (page: number, limit: number) => request.get<HospitalResponseData>(API.HOSPITAL_URL + `${page}/${limit}`);
+export const reqHospital = (page: number, limit: number, hostype: string = '',districtCode: string = '') => request.get<HospitalResponseData>(API.HOSPITAL_URL + `${page}/${limit}${hostype ? `?hostype=${hostype}` : ''}${districtCode ? `&districtCode=${districtCode}` : ''}`);
 
 // 获取医院详情数据
 export const reqHospitalLevelAndRegion = (dictCode: string) => request.get<any, HospitalLevelAndRegionResponseData>(API.HOSPITALLEVElANDREGION_URL + dictCode);

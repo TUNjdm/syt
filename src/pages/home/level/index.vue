@@ -5,8 +5,8 @@
       <div class="left">等级:</div>
       <div class="right">
         <ul>
-          <li :class="{active: activeFlag === ''} " @click="changeLevel('')">全部</li>
-          <li v-for="item in levelList" :class="{active: Number(activeFlag) === Number(item.id)}" :key="item.id" @click="changeLevel(item.id)">{{item.name}}</li>
+          <li :class="{active: activeFlag === ''} " @click="changeLevel('','')">全部</li>
+          <li v-for="item in levelList" :class="{active: Number(activeFlag) === Number(item.id)}" :key="item.id" @click="changeLevel(item.id,item.value)">{{item.name}}</li>
         </ul>
       </div>
     </div>
@@ -17,6 +17,7 @@
 import { onMounted, ref } from 'vue';
   import { reqHospitalLevelAndRegion } from '@/api/home';
   import type { HospitalLevelAndRegionResponseData,HospitalLevelAndRegionArr } from '@/api/home/type';
+import { get } from 'node_modules/axios/index.d.cts';
   const getLevel = async ()=>{
     await reqHospitalLevelAndRegion('HosType').then((res:HospitalLevelAndRegionResponseData)=>{
       levelList.value = res.data;
@@ -30,10 +31,14 @@ import { onMounted, ref } from 'vue';
   onMounted(()=>{
     getLevel()
   })
-  // 切换等级
-  const changeLevel = (id: string) => {
+  // 子组件自定义事件切换等级
+  const changeLevel = (id: string,value: string) => {
     activeFlag.value = id;
+    // 触发自定义事件
+    $emit('getLevelnumber',value);
   }
+  // 自定义事件触发父组件切换等级
+  const $emit = defineEmits(['getLevelnumber']);
 </script>
 
 <style scoped lang="scss">

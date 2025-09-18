@@ -16,18 +16,21 @@
           <!-- 循环插入多张医院卡片 -->
           <card class="card-item" v-for="item in hospitalArr" :key="item.id" :hospitalInfo="item" />
         </div>
-          <!-- 分页器 -->
-          <div class="page-box">
-            <el-pagination 
-            v-model:current-page="pageNo" 
-            v-model:page-size="pageSize" 
-            :page-sizes="[10, 20, 30, 40]"
+        <!-- 分页器 -->
+        <div class="page-box">
+          <el-pagination 
+          @current-change="currentChange" 
+          @size-change="sizeChange"
+          v-model:current-page="pageNo" 
+          v-model:page-size="pageSize"
+            :page-sizes="[10, 20, 30, 40]" 
             :size="size" 
             :disabled="disabled" 
-            :background="background" 
-            layout="prev,pager,next,jumper,->,sizes,total"
-            :total="400" />
-          </div>
+            :background="background"
+            layout="prev,pager,next,jumper,->,sizes,total" 
+            :total="total" 
+            />
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -62,12 +65,20 @@ const background = ref(true)
 const hospitalArr = ref<Hospital[]>([])
 // 存储医院总个数
 const total = ref<number>(0)
+// 页码变化时触发分页器重新加载
+const currentChange = () => {
+  getHospitalInfo()
+}
+// 分页器下拉菜单发生变化时触发
+const sizeChange=()=>{
+  getHospitalInfo()
+}
 // 组件挂载完毕发请求
 onMounted(() => {
   getHospitalInfo()
 })
 // 获取已有医院数据
-const getHospitalInfo = async() => { 
+const getHospitalInfo = async () => {
   // 获取医院数据
   await reqHospital(pageNo.value, pageSize.value).then(res => {
     console.log('获取到的医院数据:', res);
@@ -76,7 +87,7 @@ const getHospitalInfo = async() => {
     // 存储医院总个数
     total.value = res.data.totalElements
     console.log('数组值:', hospitalArr.value);
-})
+  })
 }
 </script>
 <style lang="scss">
